@@ -1,24 +1,32 @@
-var express = require("express");
+// import packages
+var express = require("express"); // Set Express
+var exphbs = require("express-handlebars"); // Set Handlebars.
+// Import routes and give the server access to them.
+var routes = require("./controllers/burger_controller.js");
+const path = require("path");
 
+// if on Heroku or other server get port using process.env.PORT OR Port 3000 for localhost
 var PORT = process.env.PORT || 8080;
+const publicDir = path.join(__dirname, "/public");
 
+// instantiate Express object.
 var app = express();
 
-app.use(express.static("public"));
+// Serve static content for the app from the "public" directory in the application directory.
+app.use(express.static(publicDir)); // access to JS, CSS and Images files
 
+// Parse request body as JSON
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-var exphbs = require("express-handlebars");
-
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+// Handelbar setup
+app.engine("handlebars", exphbs({ defaultLayout: "main" })); // main.handlebars as default layout
 app.set("view engine", "handlebars");
 
-var routes = require("./controllers/burger_controller.js");
-
+// use the routes from burgers_controller.js
 app.use(routes);
 
-
-app.listen(PORT, function() {
-  console.log("Server now up and running on port: " + PORT);
+// setup server using PORT
+app.listen(PORT, function () {
+  console.log("App now listening at localhost:" + PORT);
 });

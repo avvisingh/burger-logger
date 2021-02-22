@@ -1,55 +1,32 @@
 var express = require("express");
+
 var router = express.Router();
-var burgers = require("../models/burger.js");
+
+let burger = require("../models/burger.js");
 
 router.get("/", function (req, res) {
-    burgers.selectAll(function (data) {
-        var burgersData = {
-            burgers: data
-        };
-        console.log(burgersData);
-        res.render("index", burgersData);
-    });
+  burger.all((db_data) => {
+    let burgerHBSObj = {
+      burgers: db_data,
+    };
+    console.log("burgerHBSObj: ", burgerHBSObj);
+    res.render("index", burgerHBSObj);
+  });
 });
 
-router.post("/api/burgers", function (req, res) {
-    burgers.insertOne([
-        "burger_name",
-    ], [
-        req.body.name,
-    ], function (result) {
-        res.redirect("/burgers");
-    });
+router.post("/api/newburger", function (request, response) {
+  burger.create(request.body.burger_name, (result) => {
+    response.json({ id: result.insertId });
+    console.log("Newly added ID: ", result.insertId);
+  });
 });
 
-router.put("/api/burgers/:id", function (req, res) {
-    var condition = "id = " + req.params.id;
-
-    console.log("condition", condition);
-
-    burgers.update({
-        devoured: "true"
-    }, condition, function (result) {
-        if (result.changedRows == 0) {
-            // If no rows were changed, then the ID must not exist, so 404
-            return res.status(404).end();
-        } else {
-            res.status(200).end();
-        }
-    });
-});
-
-router.delete("/api/burgers/:id", function (req, res) {
-    var condition = "id = " + req.params.id;
-
-    burgers.deleteBurger(condition, function (result) {
-        if (result.affectedRows == 0) {
-            // If no rows were changed, then the ID must not exist, so 404
-            return res.status(404).end();
-        } else {
-            res.status(200).end();
-        }
-    });
+router.put("/api/update", function (request, response) {
+  console.log(request.body.id);
+  burger.update(request.body.id, (result) => {
+    response.json({ id: result.insertId });
+    console.log("Updated ID: ", result.insertId);
+  });
 });
 
 module.exports = router;

@@ -1,50 +1,66 @@
-  
-#main {
-    background-color: yellow;
-   }
-   h3 {
-    font-family: 'Roboto', sans-serif;
-   }
-.container {
-    background-color: white;
-}
-.jumbotron {
-    margin-bottom: 0px;
-    background-image: url("../img/burger_jumbo_bg.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-    color: white;
-    /* text-shadow: black 0.3em 0.3em 0.3em; */
-}
-#add-a-burger {
-    font-family: 'Roboto', sans-serif;
-    margin-left: 25px;
-}
-#welcome {
-   
-    margin-left: 80px;
-    font-size: 35px;
-    font-weight: bold;
-    font-family: 'Roboto', sans-serif;
-}
-#siteName {
-    margin-top: -18px;
-    margin-left: 75px;
-    font-size: 100px;
-    font-weight: bold;
-    color: red;
-    outline-color: black;
-    outline-width: 10px;
-    font-family: 'Oleo Script Swash Caps', cursive;
+body {
+  background-image: url("../images/pexels-photo-1639565-min.jpeg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: bottom;
+  font-family: "Crimson Text", serif;
 }
 
-#main-lead {
-    margin-bottom: -3px;
-    font-size: 15px;
-    font-family: 'Roboto', sans-serif;
-    padding-right: 125px;
+html,
+body,
+.container {
+  height: 100%;
 }
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: "Monoton", cursive;
+  color: yellow;
+}
+h1 {
+  font-size: 2.5em;
+}
+h3 {
+  font-size: 1.5em;
+}
+/* .btn {
+    font-size: 1.2em;
+} */
+
+.semi-opaque {
+  background-color: rgba(54, 54, 54, 0.644);
+  /* opacity: .5; */
+  min-height: 100%;
+  height: 100%;
+  /* overflow: hidden; */
+}
+
 .burger {
-    width: 100px;
-    height: 100px;
+  /* box-sizing: border-box; */
+  /* width: 90%; */
+  background-color: #fff;
+  padding: 15px;
+  /* margin: 5px; */
+  margin: 0 auto 10px auto;
+}
+
+.burger,
+form,
+.eaten {
+  border-radius: 10px;
+  box-shadow: 4px 6px rgba(0, 0, 0, 0.493);
+  font-size: 1.5em;
+}
+
+.eaten {
+  color: rgb(172, 172, 172);
+  /* width: 90%; */
+  background-color: #fff;
+  padding: 15px;
+  /* margin: 5px; */
+  margin: 0 auto 10px auto;
 }

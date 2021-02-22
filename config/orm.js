@@ -1,98 +1,43 @@
-var connection = require("./connection");
+// ORM object made by myself
+var connection = require("./connection.js");
 
-function printQuestionMarks(num) {
-  var arr = [];
-
-  for (var i = 0; i < num; i++) {
-    arr.push("?");
-  }
-
-  return arr.toString();
-}
-
-// Helper function to convert object key/value pairs to SQL syntax
-function objToSql(ob) {
-  var arr = [];
-
-  // loop through the keys and push the key/value as a string int arr
-  for (var key in ob) {
-    var value = ob[key];
-    // check to skip hidden properties
-    if (Object.hasOwnProperty.call(ob, key)) {
-      // if string with spaces, add quotations (Lana Del Grey => 'Lana Del Grey')
-      if (typeof value === "string" && value.indexOf(" ") >= 0) {
-        value = "'" + value + "'";
+let orm = {
+  // selectAll method
+  all: (getTable, callback) => {
+    const queryStr = "SELECT * FROM ??";
+    connection.query(queryStr, getTable, (err, result) => {
+      if (err) {
+        throw err;
       }
-      // e.g. {name: 'Lana Del Grey'} => ["name='Lana Del Grey'"]
-      // e.g. {sleepy: true} => ["sleepy=true"]
-      arr.push(key + "=" + value);
-    }
-  }
+      callback(result); // run the callback function with result as argument
+    });
+  },
+  // insertOne method
+  create: (newBurger, callback) => {
+    const queryStr = "INSERT INTO burgers (burger_name) VALUES (?)";
+    connection.query(queryStr, newBurger, (err, result) => {
+      if (err) {
+        throw err;
+      }
+      // run the callback function from burgers_controller.js
+      // with result as argument for response.json({id: result.insertId})
+      callback(result);
+    });
+  },
 
-  // translate array of strings to a single comma-separated string
-  return arr.toString();
-}
-// Object for all our SQL statement functions.
-var orm = {
-    all: function(tableInput, cb) {
-      var queryString = "SELECT * FROM " + tableInput + ";";
-      connection.query(queryString, function(err, result) {
-        if (err) {
-          throw err;
-        }
-        cb(result);
-      });
-    },
-    create: function(table, cols, vals, cb) {
-      var queryString = "INSERT INTO " + table;
-  
-      queryString += " (";
-      queryString += cols.toString();
-      queryString += ") ";
-      queryString += "VALUES (";
-      queryString += printQuestionMarks(vals.length);
-      queryString += ") ";
-  
-      console.log(queryString);
-  
-      connection.query(queryString, vals, function(err, result) {
-        if (err) {
-          throw err;
-        }
-  
-        cb(result);
-      });
-    },
-    update: function(table, objColVals, condition, cb) {
-      var queryString = "UPDATE " + table;
-  
-      queryString += " SET ";
-      queryString += objToSql(objColVals);
-      queryString += " WHERE ";
-      queryString += condition;
-  
-      console.log(queryString);
-      connection.query(queryString, function(err, result) {
-        if (err) {
-          throw err;
-        }
-  
-        cb(result);
-      });
-    },
-    delete: function(table, condition, cb) {
-      var queryString = "DELETE FROM " + table;
-      queryString += " WHERE ";
-      queryString += condition;
-  
-      connection.query(queryString, function(err, result) {
-        if (err) {
-          throw err;
-        }
-  
-        cb(result);
-      });
-    }
+  // updateOne method
+  update: (selectedID, callback) => {
+    const queryStr = "UPDATE burgers SET devoured = NOT devoured WHERE id = ?";
+    connection.query(queryStr, selectedID, (err, result) => {
+      if (err) {
+        throw err;
+      }
+      // run the callback function from burgers_controller.js
+      // with result as argument for response.json({id: result.insertId})
+      callback(result);
+    });
+  },
 };
 
+// export orm object
 module.exports = orm;
